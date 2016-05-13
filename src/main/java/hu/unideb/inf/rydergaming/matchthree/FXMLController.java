@@ -13,13 +13,22 @@ public class FXMLController implements Initializable {
     private Label label;
     
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void startHandleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
-        label.setText("Hello World!");
     }
     
+    @FXML
+    private void quitHandleButtonAction(ActionEvent event) {
+    	System.exit(0);
+    }
+	@FXML 
+	private void scoreHandleButtonAction(ActionEvent event) {
+		
+	}   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
+
+ 
 }

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml" fx:controller="hu.unideb.inf.rydergaming.matchthree.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.rydergaming.matchthree.FXMLController">
     <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
+        <Button fx:id="start_game" layoutX="266.0" layoutY="161.0" onAction="#startHandleButtonAction" prefHeight="39.0" prefWidth="69.0" text="Start" />
+        <Label fx:id="label" layoutX="188.0" layoutY="37.0" minHeight="16" minWidth="69" prefHeight="115.0" prefWidth="225.0" text="MATCH THREE" textAlignment="CENTER">
+         <font>
+            <Font name="Impact" size="40.0" />
+         </font></Label>
+      <Button fx:id="score" layoutX="266.0" layoutY="217.0" onAction="#scoreHandleButtonAction" prefHeight="39.0" prefWidth="69.0" text="Score" />
+      <Button fx:id="quit" layoutX="266.0" layoutY="275.0" onAction="#quitHandleButtonAction" prefHeight="39.0" prefWidth="69.0" text="Quit" />
     </children>
 </AnchorPane>
