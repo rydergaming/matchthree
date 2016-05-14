@@ -10,6 +10,6 @@
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.rydergaming.matchthree.GameFXMLController">
    <children>
       <Label fx:id="playerName" layoutX="490.0" layoutY="45.0" text="Dummy" />
-      <Canvas id="canv" fx:id="canvas" height="375.0" layoutX="14.0" layoutY="14.0" width="375.0" />
+      <Canvas id="canvas" fx:id="canvas" height="368.0" layoutX="16.0" layoutY="16.0" onMouseClicked="#canvasOnMouseClicked" width="368.0" />
    </children>
 </AnchorPane>
