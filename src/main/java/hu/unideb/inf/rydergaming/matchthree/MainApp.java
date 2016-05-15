@@ -1,7 +1,6 @@
 package hu.unideb.inf.rydergaming.matchthree;
 
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -38,7 +38,7 @@ public class GameFXMLController implements Initializable {
     
     int sX, sY, tX, tY;
     
-    Board br = new Board();
+    Board br;
     /**
      * Initializes the controller class.
      */
@@ -49,6 +49,7 @@ public class GameFXMLController implements Initializable {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         /*Image img = new Image(this.getClass().getResourceAsStream("/sprites/spr_1.png"));
         gc.drawImage(img, 0, 0);*/
+        br = new Board();
         drawBoard();
     }    
     
@@ -66,14 +67,21 @@ public class GameFXMLController implements Initializable {
         	return;
     	}
     	if (picked) {
+    		gc.setFill(Color.WHITE);
+    		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         	tY = Math.floorDiv((int) m.getX(), 46);
-        	tX = Math.floorDiv((int) m.getY(), 46);   
-        	MainApp.logger.warn(sX + " " +sY +"\n" + tX +" " + tY);
-    		if (br.getElement(sX, sY) == br.getElement(tX, tY)) {    			
-    			MainApp.logger.warn("Values: " + Integer.toString(br.getElement(sX, sY))
-    					+ " " + Integer.toString(br.getElement(tX, tY)));
+        	tX = Math.floorDiv((int) m.getY(), 46); 
+        	br.switchPositions(br.getElement(sX, sY), br.getElement(tX, tY));
+        	if (br.checkDirections(tX, tY, false))
+        		br.fallBoard();
+        	/*MainApp.logger.warn(sX + " " +sY +"\n" + tX +" " + tY);
+    		if (br.getElement(sX, sY).getValue() == br.getElement(tX, tY).getValue()) {    			
+    			MainApp.logger.warn("Values: " + Integer.toString(br.getElement(sX, sY).getValue())
+    					+ " " + Integer.toString(br.getElement(tX, tY).getValue()));
 
-    		}
+    		}*/
+    		drawBoard();
+    		picked = false;
     	}
 
     }
@@ -100,10 +108,10 @@ public class GameFXMLController implements Initializable {
     private void drawBoard() {
     	for (int i=0; i<8; i++) {
     		for (int j=0; j<8; j++) {
-    			int tmp = br.getElement(j, i);
-    			if (tmp == -1)
+    			Globe tmp = br.getElement(j, i);
+    			if (tmp.getValue() == -1)
     				continue;
-    			String tmpString = "/sprites/spr_" + Integer.toString(tmp+1)+".png";
+    			String tmpString = "/sprites/spr_" + Integer.toString(tmp.getValue()+1)+".png";
     	        Image img = new Image(this.getClass()
     	        		.getResourceAsStream(tmpString));
     	        gc.drawImage(img, i*46, j*46);
