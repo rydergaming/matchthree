@@ -63,23 +63,21 @@ public class GameFXMLController implements Initializable {
 			MainApp.logger.warn(sX + " " +sY +"\n" + tX +" " + tY);
             Image img = new Image(this.getClass().getResourceAsStream("/sprites/spr_edge.png"));
             gc.drawImage(img, x*46, y*46);
+            //br.getElement(sX, sY).showValues();
         	picked = true; 
         	return;
     	}
     	if (picked) {
-    		gc.setFill(Color.WHITE);
-    		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         	tY = Math.floorDiv((int) m.getX(), 46);
         	tX = Math.floorDiv((int) m.getY(), 46); 
-        	br.switchPositions(br.getElement(sX, sY), br.getElement(tX, tY));
-        	if (br.checkDirections(tX, tY, false))
-        		br.fallBoard();
-        	/*MainApp.logger.warn(sX + " " +sY +"\n" + tX +" " + tY);
-    		if (br.getElement(sX, sY).getValue() == br.getElement(tX, tY).getValue()) {    			
-    			MainApp.logger.warn("Values: " + Integer.toString(br.getElement(sX, sY).getValue())
-    					+ " " + Integer.toString(br.getElement(tX, tY).getValue()));
+          //  br.getElement(sX, sY).showValues();
+          //  br.getElement(tX, tY).showValues();
+        	br.switchPositions(sX,sY,tX,tY);
 
-    		}*/
+        	if (br.checkRecursiveHorStart(tX, tY, true) || br.checkRecursiveVerStart(tX, tY, true))
+        		br.fallBoard();
+        	else
+        		br.switchPositions(sX,sY,tX,tY);
     		drawBoard();
     		picked = false;
     	}
@@ -106,15 +104,17 @@ public class GameFXMLController implements Initializable {
     }
     
     private void drawBoard() {
+		gc.setFill(Color.WHITE);
+		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     	for (int i=0; i<8; i++) {
     		for (int j=0; j<8; j++) {
-    			Globe tmp = br.getElement(j, i);
-    			if (tmp.getValue() == -1)
+    			int tmp = br.getElement(j, i);
+    			if (tmp == -1)
     				continue;
-    			String tmpString = "/sprites/spr_" + Integer.toString(tmp.getValue()+1)+".png";
+    			String tmpString = "/sprites/spr_" + Integer.toString(tmp+1)+".png";
     	        Image img = new Image(this.getClass()
     	        		.getResourceAsStream(tmpString));
-    	        gc.drawImage(img, i*46, j*46);
+    	        gc.drawImage(img, i * 46, j * 46);
     		}
     	}
     }

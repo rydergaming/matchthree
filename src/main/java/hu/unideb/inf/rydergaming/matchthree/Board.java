@@ -4,7 +4,7 @@ import java.util.*;
 import org.slf4j.*;
 
 public class Board {
-	private Globe[][] board = new Globe[8][8];
+	private int[][] board = new int[8][8];
 
 	private int points = 0;
 	private Random rnd = new Random();	
@@ -13,10 +13,17 @@ public class Board {
 		rnd.setSeed(19950622);
 		for (int i=0; i<8; i++)
 			for (int j=0; j<8; j++)
-				board[i][j] = new Globe(rnd.nextInt(8),i,j);
-		checkBoard(false);
+				board[i][j] = rnd.nextInt(6);
+		//checkBoard(false);
+		
+		for (int i=0;i<8; i++)
+			for (int j=0; j<8; j++) {
+				checkRecursiveHorStart(i, j, false);
+				checkRecursiveVerStart(i, j, false);
+			}
+				
 		fallBoard();
-		showBoard();
+		//showBoard();
 		
 	}
 	
@@ -24,12 +31,12 @@ public class Board {
 		
 		for (int i=0; i<8; i++) {
 			for (int j=0; j<8; j++)
-				System.out.print(Integer.toString(board[i][j].getValue()) + " ");
+				System.out.print(Integer.toString(board[i][j]) + " ");
 				System.out.println();
 		}
 	}
 	
-	public Globe getElement(int row, int column){
+	public int getElement(int row, int column){
 		return board[row][column];		
 	}
 	
@@ -39,10 +46,11 @@ public class Board {
 		while (tmp>0) {	
 			for (int i=7; i>=1;i--)
 				for (int j=7; j>=0;j--) {
-					if (board[i][j] == null) {
+					if (board[i][j] == -1) {
 						if (i != 0) {
+							//board[i][j] = new Globe(board[i-1][j].getValue(),i,j);
 							board[i][j] = board[i-1][j];
-							board[i-1][j] = null;							
+							board[i-1][j] = -1;							
 						}									
 					}	
 				}
@@ -51,8 +59,8 @@ public class Board {
 		
 		for (int i=0; i<8; i++)
 			for (int j=0; j<8; j++)
-				if (board[i][j] == null)
-					board[i][j] = new Globe(rnd.nextInt(8),i,j);
+				if (board[i][j] == -1)
+					board[i][j] = rnd.nextInt(6);
 	}
 	
 	public void checkBoard(boolean givePoints) {
@@ -65,14 +73,95 @@ public class Board {
 	
 	public void switchPositions(Globe a, Globe b) {
 		if (a.getRow() == b.getRow() || a.getColumn() == b.getColumn()) {
-			Globe c = new Globe(a.getValue(),0,0);
+			Globe c = new Globe(a.getValue(),a.getRow(),a.getColumn());
 			
 			a.setValue(b.getValue());
+			a.setRow(b.getRow());
+			a.setColumn(b.getColumn());
 			b.setValue(c.getValue());
+			b.setRow(c.getRow());
+			b.setColumn(c.getColumn());
 
 		}
 				
 	}
+	
+	public void switchPositions(int aX, int aY, int bX, int bY) {
+		int c = board[aX][aY];
+			board[aX][aY] = board[bX][bY];
+			board[bX][bY] = c;
+	}
+	
+	public boolean checkRecursiveHorStart(int i, int j, boolean givePoints) {
+		boolean hasMatch = false;
+		int start, end;
+		start = end = 0;
+		//System.out.println("I'm started at: " + i + " " + j);
+		start = checkRecursiveHor(i,j,-1);
+		end = checkRecursiveHor(i,j,1);
+		if (i == 6)
+			System.out.println(start + " " + end);
+		if (((j+end) - (j - start)) >=2)
+			for (int k=j - start; k<=j + end; k++) {
+				if (givePoints) {
+					//ez magic
+				}
+				board[i][k] = -1;
+				hasMatch = true;
+		}	
+		if (hasMatch) {
+			MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
+		}
+		return hasMatch;
+	}
+	
+	public int checkRecursiveHor(int i, int j, int dir) {
+		int debugValue = 0;
+			if (j+dir<0 || j+dir>7)
+				return 0;
+			/*if (board[i][j] == null || board[i][j+dir] == null)
+				return 0;*/
+			if (board[i][j] != board[i][j+dir])
+				return 0;
+		return 1 + checkRecursiveHor(i, j+dir, dir);
+
+	}
+	
+	public boolean checkRecursiveVerStart(int i, int j, boolean givePoints) {
+		boolean hasMatch = false;
+		int start, end;
+		start = end = 0;
+		//System.out.println("I'm started at: " + i + " " + j);
+		start = checkRecursiveVer(i,j,-1);
+		end = checkRecursiveVer(i,j,1);
+		
+		if (((i+end) - (i - start)) >=2)
+			for (int k=i - start; k<=i + end; k++) {
+				if (givePoints) {
+					//ez magic
+				}
+				board[k][j] = -1;
+				hasMatch = true;
+		}	
+		if (hasMatch) {
+			MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
+		}
+		return hasMatch;
+	}
+	
+	public int checkRecursiveVer(int i, int j, int dir) {
+		int debugValue = 0;
+			if (i+dir<0 || i+dir>7)
+				return 0;
+			/*if (board[i][j] == null || board[i+dir][j] == null)
+				return 0;*/
+			if (board[i][j] != board[i+dir][j])
+				return 0;
+		return 1 + checkRecursiveHor(i+dir, j, dir);
+
+	}
+	
+	
 	
 	public boolean checkDirections(int i, int j, boolean givePoints) {
 
@@ -80,23 +169,23 @@ public class Board {
 			if (givePoints) {
 				//Magic will happen here;
 			}
-			board[i][j] = board[i][j-1] = board[i][j-2] = null;	
+			board[i][j] = board[i][j-1] = board[i][j-2] = -1;	
 			return true;
 		}
 		if (checkVerticalMatchMid(i,j)) {
 			if (givePoints) {
 				//magicl
 			}
-			board[i][j] = null;
-			board[i][j-1] = null;
-			board[i][j+1] = null;
+			board[i][j] = -1;
+			board[i][j-1] = -1;
+			board[i][j+1] = -1;
 			return true;
 		}
 		if (checkVerticalMatchDown(i,j)) {
 			if (givePoints) {
 				//magic;
 			}
-			board[i][j] = board[i][j+1] = board[i][j+2] = null;
+			board[i][j] = board[i][j+1] = board[i][j+2] = -1;
 			return true;
 		}
 		
@@ -104,21 +193,21 @@ public class Board {
 			if (givePoints) {
 				//Magic will happen here;
 			}
-			board[i][j] = board[i-1][j] = board[i-2][j] = null;	
+			board[i][j] = board[i-1][j] = board[i-2][j] = -1;	
 			return true;
 		}
 		if (checkHorizontalMatchMid(i,j)) {
 			if (givePoints) {
 				//magicl
 			}
-			board[i][j] = board[i-1][j] = board[i+1][j] = null;
+			board[i][j] = board[i-1][j] = board[i+1][j] = -1;
 			return true;
 		}
 		if (checkHorizontalMatchRight(i,j)) {
 			if (givePoints) {
 				//magic;
 			}
-			board[i][j] = board[i+1][j] = board[i+2][j] = null;
+			board[i][j] = board[i+1][j] = board[i+2][j] = -1;
 			return true;
 		}
 		return false;
@@ -129,10 +218,10 @@ public class Board {
 		boolean hasMatch = false;
 			if ((j-2)<0)
 				return hasMatch;
-			if (board[i][j] == null)
+			if (board[i][j] == -1)
 				return hasMatch;
-			if (board[i][j].equalsTo(board[i][j-1]))
-				if (board[i][j].equalsTo(board[i][j-2]))
+			if (board[i][j] == (board[i][j-1]))
+				if (board[i][j] == (board[i][j-2]))
 					hasMatch = true;
 		return hasMatch;
 	}
@@ -141,10 +230,10 @@ public class Board {
 		boolean hasMatch = false;
 			if ((j+2)>7)
 				return hasMatch;
-			if (board[i][j] == null)
+			if (board[i][j] == -1)
 				return hasMatch;
-			if (board[i][j].equalsTo(board[i][j+1]))
-				if (board[i][j].equalsTo(board[i][j+2]))
+			if (board[i][j] == (board[i][j+1]))
+				if (board[i][j]==(board[i][j+2]))
 					hasMatch = true;
 		return hasMatch;
 	}
@@ -153,10 +242,10 @@ public class Board {
 		boolean hasMatch = false;
 			if ((j-1)<0 || (j+1)>7)
 				return hasMatch;
-			if (board[i][j] == null)
+			if (board[i][j] == -1)
 				return hasMatch;
-			if (board[i][j].equalsTo(board[i][j-1]))
-				if (board[i][j].equalsTo(board[i][j+1]))
+			if (board[i][j] == (board[i][j-1]))
+				if (board[i][j] ==(board[i][j+1]))
 					hasMatch = true;
 		return hasMatch;
 	}
@@ -165,10 +254,10 @@ public class Board {
 		boolean hasMatch = false;
 			if ((i-2)<0)
 				return hasMatch;
-			if (board[i][j] == null)
+			if (board[i][j] == -1)
 				return hasMatch;
-			if (board[i][j].equalsTo(board[i-1][j]))
-				if (board[i][j].equalsTo(board[i-2][j]))
+			if (board[i][j] == (board[i-1][j]))
+				if (board[i][j] == (board[i-2][j]))
 					hasMatch = true;
 		return hasMatch;
 	}
@@ -177,10 +266,10 @@ public class Board {
 		boolean hasMatch = false;
 			if ((i+2)>7)
 				return hasMatch;
-			if (board[i][j] == null)
+			if (board[i][j] == -1)
 				return hasMatch;
-			if (board[i][j].equalsTo(board[i+1][j]))
-				if (board[i][j].equalsTo(board[i+2][j]))
+			if (board[i][j] == (board[i+1][j]))
+				if (board[i][j] == (board[i+2][j]))
 					hasMatch = true;
 		return hasMatch;
 	}
@@ -189,10 +278,10 @@ public class Board {
 		boolean hasMatch = false;
 			if ((i-1)<0 || (i+1)>7)
 				return hasMatch;
-			if (board[i][j] == null)
+			if (board[i][j] == -1)
 				return hasMatch;
-			if (board[i][j].equalsTo(board[i-1][j]))
-				if (board[i][j].equalsTo(board[i+1][j]))
+			if (board[i][j] == (board[i-1][j]))
+				if (board[i][j] == (board[i+1][j]))
 					hasMatch = true;
 		return hasMatch;
 	}
