@@ -18,12 +18,10 @@ public class Globe {
 
 	public Globe(int value, int row, int column) {		
 		this.value = value;
-		this.row = row;
-		this.column = column;
 		sprite = new Image(this.getClass()
         		.getResourceAsStream("/sprites/spr_" + Integer.toString(this.value+1)+".png"));
-		this.x = row * 46;
-		this.y = column * 46;
+		this.x = this.dX = row * 46;
+		this.y = this.dY = column * 46;
 	}
 	
 	public void showValues() {

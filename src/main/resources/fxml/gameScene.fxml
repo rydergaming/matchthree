@@ -11,5 +11,6 @@
    <children>
       <Label fx:id="playerName" layoutX="490.0" layoutY="45.0" text="Dummy" />
       <Canvas id="canvas" fx:id="canvas" height="368.0" layoutX="16.0" layoutY="16.0" onMouseClicked="#canvasOnMouseClicked" width="368.0" />
+      <Label fx:id="points" alignment="CENTER" layoutX="497.0" layoutY="254.0" text="Label" />
    </children>
 </AnchorPane>

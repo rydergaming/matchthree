@@ -5,25 +5,46 @@ import org.slf4j.*;
 
 public class Board {
 	private int[][] board = new int[8][8];
+	public double[][] offset = new double[8][8];
+	public int cellheight = 0;
+	private int moves = 20;
+
+	public int getMoves() {
+		return moves;
+	}
+
+	public void setMoves(int moves) {
+		this.moves = moves;
+	}
 
 	private int points = 0;
+	public int getPoints() {
+		return points;
+	}
+
 	private Random rnd = new Random();	
 	public Board() {
 
 		rnd.setSeed(19950622);
 		for (int i=0; i<8; i++)
-			for (int j=0; j<8; j++)
+			for (int j=0; j<8; j++){
 				board[i][j] = rnd.nextInt(6);
+				offset[i][j] = -1000;
+			}
+
 		//checkBoard(false);
 		
 		for (int i=0;i<8; i++)
 			for (int j=0; j<8; j++) {
 				checkRecursiveHorStart(i, j, false);
 				checkRecursiveVerStart(i, j, false);
-			}
-				
+			}	
 		fallBoard();
 		//showBoard();
+		for (int i=0; i<8 ;i++)
+			for (int j=0;j<8;j++) {
+				offset[i][j] = i*46;
+			}
 		
 	}
 	
@@ -32,6 +53,15 @@ public class Board {
 		for (int i=0; i<8; i++) {
 			for (int j=0; j<8; j++)
 				System.out.print(Integer.toString(board[i][j]) + " ");
+				System.out.println();
+		}
+	}
+
+	public void showOffset() {
+		
+		for (int i=0; i<8; i++) {
+			for (int j=0; j<8; j++)
+				System.out.print(Double.toString(offset[i][j]) + " ");
 				System.out.println();
 		}
 	}
@@ -50,6 +80,7 @@ public class Board {
 						if (i != 0) {
 							//board[i][j] = new Globe(board[i-1][j].getValue(),i,j);
 							board[i][j] = board[i-1][j];
+							offset[i][j] = offset[i-1][j];
 							board[i-1][j] = -1;							
 						}									
 					}	
@@ -59,8 +90,13 @@ public class Board {
 		
 		for (int i=0; i<8; i++)
 			for (int j=0; j<8; j++)
-				if (board[i][j] == -1)
+				if (board[i][j] == -1)	{
 					board[i][j] = rnd.nextInt(6);
+					offset[i][j] = -46;
+				}
+		//showBoard();
+		//showOffset();
+					
 	}
 	
 	public void checkBoard(boolean givePoints) {
@@ -87,6 +123,11 @@ public class Board {
 	}
 	
 	public void switchPositions(int aX, int aY, int bX, int bY) {
+		if (aX != bX && aY != bY)
+			return;
+/*		System.out.println("Switching");
+		System.out.println(aX + " " + aY + " " + bX + " " + bY);
+		System.out.println(board[aX][aY] + " " + board[bX][bY]);*/
 		int c = board[aX][aY];
 			board[aX][aY] = board[bX][bY];
 			board[bX][bY] = c;
@@ -104,13 +145,13 @@ public class Board {
 		if (((j+end) - (j - start)) >=2)
 			for (int k=j - start; k<=j + end; k++) {
 				if (givePoints) {
-					//ez magic
+					points += board[i][k] + 3;
 				}
 				board[i][k] = -1;
 				hasMatch = true;
 		}	
 		if (hasMatch) {
-			MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
+			//MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
 		}
 		return hasMatch;
 	}
@@ -119,8 +160,8 @@ public class Board {
 		int debugValue = 0;
 			if (j+dir<0 || j+dir>7)
 				return 0;
-			/*if (board[i][j] == null || board[i][j+dir] == null)
-				return 0;*/
+			if (board[i][j] == -1 || board[i][j+dir] == -1)
+				return 0;
 			if (board[i][j] != board[i][j+dir])
 				return 0;
 		return 1 + checkRecursiveHor(i, j+dir, dir);
@@ -134,11 +175,12 @@ public class Board {
 		//System.out.println("I'm started at: " + i + " " + j);
 		start = checkRecursiveVer(i,j,-1);
 		end = checkRecursiveVer(i,j,1);
-		
-		if (((i+end) - (i - start)) >=2)
+		//if (i == 3)
+		System.out.println("start end: " + start + end);
+		if (end + start >=2)
 			for (int k=i - start; k<=i + end; k++) {
 				if (givePoints) {
-					//ez magic
+					points += board[k][j] + 3;
 				}
 				board[k][j] = -1;
 				hasMatch = true;
@@ -153,11 +195,11 @@ public class Board {
 		int debugValue = 0;
 			if (i+dir<0 || i+dir>7)
 				return 0;
-			/*if (board[i][j] == null || board[i+dir][j] == null)
-				return 0;*/
+			if (board[i][j] == -1 || board[i+dir][j] == -1)
+				return 0;
 			if (board[i][j] != board[i+dir][j])
 				return 0;
-		return 1 + checkRecursiveHor(i+dir, j, dir);
+		return 1 + checkRecursiveVer(i+dir, j, dir);
 
 	}
 	
