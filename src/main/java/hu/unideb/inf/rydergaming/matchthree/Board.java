@@ -1,7 +1,6 @@
 package hu.unideb.inf.rydergaming.matchthree;
 
 import java.util.*;
-import org.slf4j.*;
 
 public class Board {
 	private int[][] board = new int[8][8];
@@ -78,7 +77,6 @@ public class Board {
 				for (int j=7; j>=0;j--) {
 					if (board[i][j] == -1) {
 						if (i != 0) {
-							//board[i][j] = new Globe(board[i-1][j].getValue(),i,j);
 							board[i][j] = board[i-1][j];
 							offset[i][j] = offset[i-1][j];
 							board[i-1][j] = -1;							
@@ -87,8 +85,8 @@ public class Board {
 				}
 			tmp--;
 		}
-		
-		for (int i=0; i<8; i++)
+
+		for (int i=7; i>=0; i--)
 			for (int j=0; j<8; j++)
 				if (board[i][j] == -1)	{
 					board[i][j] = rnd.nextInt(6);
@@ -97,14 +95,6 @@ public class Board {
 		//showBoard();
 		//showOffset();
 					
-	}
-	
-	public void checkBoard(boolean givePoints) {
-		for (int i=0; i<8; i++) {
-			for (int j=0; j<8; j++) {
-				checkDirections(i,j,givePoints);
-			}
-		}
 	}
 	
 	public void switchPositions(Globe a, Globe b) {
@@ -140,8 +130,8 @@ public class Board {
 		//System.out.println("I'm started at: " + i + " " + j);
 		start = checkRecursiveHor(i,j,-1);
 		end = checkRecursiveHor(i,j,1);
-		if (i == 6)
-			System.out.println(start + " " + end);
+		/*if (i == 6)
+			System.out.println(start + " " + end);*/
 		if (((j+end) - (j - start)) >=2)
 			for (int k=j - start; k<=j + end; k++) {
 				if (givePoints) {
@@ -157,7 +147,7 @@ public class Board {
 	}
 	
 	public int checkRecursiveHor(int i, int j, int dir) {
-		int debugValue = 0;
+		//int debugValue = 0;
 			if (j+dir<0 || j+dir>7)
 				return 0;
 			if (board[i][j] == -1 || board[i][j+dir] == -1)
@@ -176,7 +166,7 @@ public class Board {
 		start = checkRecursiveVer(i,j,-1);
 		end = checkRecursiveVer(i,j,1);
 		//if (i == 3)
-		System.out.println("start end: " + start + end);
+		//System.out.println("start end: " + start + end);
 		if (end + start >=2)
 			for (int k=i - start; k<=i + end; k++) {
 				if (givePoints) {
@@ -192,7 +182,7 @@ public class Board {
 	}
 	
 	public int checkRecursiveVer(int i, int j, int dir) {
-		int debugValue = 0;
+		//int debugValue = 0;
 			if (i+dir<0 || i+dir>7)
 				return 0;
 			if (board[i][j] == -1 || board[i+dir][j] == -1)
@@ -201,130 +191,5 @@ public class Board {
 				return 0;
 		return 1 + checkRecursiveVer(i+dir, j, dir);
 
-	}
-	
-	
-	
-	public boolean checkDirections(int i, int j, boolean givePoints) {
-
-		if (checkVerticalMatchUp(i,j)) {
-			if (givePoints) {
-				//Magic will happen here;
-			}
-			board[i][j] = board[i][j-1] = board[i][j-2] = -1;	
-			return true;
-		}
-		if (checkVerticalMatchMid(i,j)) {
-			if (givePoints) {
-				//magicl
-			}
-			board[i][j] = -1;
-			board[i][j-1] = -1;
-			board[i][j+1] = -1;
-			return true;
-		}
-		if (checkVerticalMatchDown(i,j)) {
-			if (givePoints) {
-				//magic;
-			}
-			board[i][j] = board[i][j+1] = board[i][j+2] = -1;
-			return true;
-		}
-		
-		if (checkHorizontalMatchLeft(i,j)) {
-			if (givePoints) {
-				//Magic will happen here;
-			}
-			board[i][j] = board[i-1][j] = board[i-2][j] = -1;	
-			return true;
-		}
-		if (checkHorizontalMatchMid(i,j)) {
-			if (givePoints) {
-				//magicl
-			}
-			board[i][j] = board[i-1][j] = board[i+1][j] = -1;
-			return true;
-		}
-		if (checkHorizontalMatchRight(i,j)) {
-			if (givePoints) {
-				//magic;
-			}
-			board[i][j] = board[i+1][j] = board[i+2][j] = -1;
-			return true;
-		}
-		return false;
-	}
-	
-	
-	public boolean checkVerticalMatchUp(int i, int j) {
-		boolean hasMatch = false;
-			if ((j-2)<0)
-				return hasMatch;
-			if (board[i][j] == -1)
-				return hasMatch;
-			if (board[i][j] == (board[i][j-1]))
-				if (board[i][j] == (board[i][j-2]))
-					hasMatch = true;
-		return hasMatch;
-	}
-	
-	public boolean checkVerticalMatchDown(int i, int j) {
-		boolean hasMatch = false;
-			if ((j+2)>7)
-				return hasMatch;
-			if (board[i][j] == -1)
-				return hasMatch;
-			if (board[i][j] == (board[i][j+1]))
-				if (board[i][j]==(board[i][j+2]))
-					hasMatch = true;
-		return hasMatch;
-	}
-	
-	public boolean checkVerticalMatchMid(int i, int j) {
-		boolean hasMatch = false;
-			if ((j-1)<0 || (j+1)>7)
-				return hasMatch;
-			if (board[i][j] == -1)
-				return hasMatch;
-			if (board[i][j] == (board[i][j-1]))
-				if (board[i][j] ==(board[i][j+1]))
-					hasMatch = true;
-		return hasMatch;
-	}
-	
-	public boolean checkHorizontalMatchLeft(int i, int j) {
-		boolean hasMatch = false;
-			if ((i-2)<0)
-				return hasMatch;
-			if (board[i][j] == -1)
-				return hasMatch;
-			if (board[i][j] == (board[i-1][j]))
-				if (board[i][j] == (board[i-2][j]))
-					hasMatch = true;
-		return hasMatch;
-	}
-	
-	public boolean checkHorizontalMatchRight(int i, int j) {
-		boolean hasMatch = false;
-			if ((i+2)>7)
-				return hasMatch;
-			if (board[i][j] == -1)
-				return hasMatch;
-			if (board[i][j] == (board[i+1][j]))
-				if (board[i][j] == (board[i+2][j]))
-					hasMatch = true;
-		return hasMatch;
-	}
-	
-	public boolean checkHorizontalMatchMid(int i, int j) {
-		boolean hasMatch = false;
-			if ((i-1)<0 || (i+1)>7)
-				return hasMatch;
-			if (board[i][j] == -1)
-				return hasMatch;
-			if (board[i][j] == (board[i-1][j]))
-				if (board[i][j] == (board[i+1][j]))
-					hasMatch = true;
-		return hasMatch;
 	}
 }

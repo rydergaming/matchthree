@@ -55,10 +55,7 @@ public class StartFXMLController implements Initializable {
     private void quitHandleButtonAction(ActionEvent event) {
     	System.exit(0);
     }
-	@FXML 
-	private void scoreHandleButtonAction(ActionEvent event) {
-		
-	}   
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

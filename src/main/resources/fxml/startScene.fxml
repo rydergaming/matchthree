@@ -14,7 +14,6 @@
          <font>
             <Font name="Impact" size="40.0" />
          </font></Label>
-      <Button fx:id="score" layoutX="266.0" layoutY="289.0" onAction="#scoreHandleButtonAction" prefHeight="39.0" prefWidth="69.0" text="Score" />
       <Button fx:id="quit" layoutX="266.0" layoutY="347.0" onAction="#quitHandleButtonAction" prefHeight="39.0" prefWidth="69.0" text="Quit" />
       <Label layoutX="221.0" layoutY="129.0" text="What is your name?">
          <font>

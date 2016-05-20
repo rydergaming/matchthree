@@ -2,6 +2,8 @@ package hu.unideb.inf.rydergaming.matchthree;
 
 import javafx.application.Application;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +18,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/startScene.fxml"));
-        
+    
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
         
@@ -34,6 +36,9 @@ public class MainApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        //File file = new File("D:/fss/MatchThree/src/main/resources/score.xml");
+        //XMLParser.loadXML(file);   
+    	//XMLParser.saveXML(null);
         launch(args);
     }
 

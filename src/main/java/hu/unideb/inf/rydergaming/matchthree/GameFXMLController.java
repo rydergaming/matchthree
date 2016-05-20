@@ -1,25 +1,36 @@
 package hu.unideb.inf.rydergaming.matchthree;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.animation.AnimationTimer;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
 
 public class GameFXMLController implements Initializable {
 
@@ -31,16 +42,25 @@ public class GameFXMLController implements Initializable {
     Canvas canvas; 
     
     @FXML
+    TextArea textArea;
+    
+    @FXML
+    Label movesLeft;
+    
+    @FXML
     Label points;
+    
+    @FXML
+    Button newGame;
 
     Stage stage;
     Scene scene;
     
-    Group root = new Group();
-    
+   
     GraphicsContext gc;
     boolean picked = false;
     boolean falling = false;
+    List<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
     
     int sX, sY, tX, tY;
     
@@ -55,9 +75,23 @@ public class GameFXMLController implements Initializable {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         br = new Board();
         drawBoard();
-        
-        //final long startNanoTime = System.nanoTime();
-        
+
+        try {
+			lista = XMLParser.loadXML(new File(this.getClass().getResource("/score.xml").toURI()));			
+			//XMLParser.saveXML(lista, file);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        textArea.setEditable(false);
+		for (List l: lista) {
+			textArea.appendText(l.get(0).toString() + ":  " + l.get(1).toString());
+			textArea.appendText("\n");
+			
+		}
+		movesLeft.setText("Moves left: " + br.getMoves());
+		
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
@@ -113,8 +147,21 @@ public class GameFXMLController implements Initializable {
         	}*/
         	
         	if (br.checkRecursiveHorStart(tX, tY, true) || br.checkRecursiveVerStart(tX, tY, true)) {
+        		//System.out.println("Starting showing the stuff:");
+        		//br.showBoard();
         		br.fallBoard();
         		br.setMoves(br.getMoves()-1);
+        		if (br.getMoves() == 0 ) {
+        			try {
+        				lista.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
+						File file = new File(this.getClass().getResource("/score.xml").toURI());
+						XMLParser.saveXML(lista, file);
+						file = null;
+					} catch (URISyntaxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
         		boolean checkNew = true;
         		while (checkNew) {
         			checkNew = false;
@@ -126,6 +173,9 @@ public class GameFXMLController implements Initializable {
         		        	}
         				}
         		}
+        		//System.out.println("=========================");
+        		//br.showBoard();
+        		movesLeft.setText("Moves left: " + br.getMoves());
         	}
         		
 
@@ -140,23 +190,27 @@ public class GameFXMLController implements Initializable {
 
     }
     @FXML
-    public void canvasOnDragDetected(MouseEvent m) {
-    	int x, y;
-    	x = (int) (m.getSceneX() / 46);
-    	y = (int) (m.getSceneY() / 46);
+    public void newGameEvent(MouseEvent m) {
+    	try {
+            Stage stage;
+            Parent root;
+            //root = FXMLLoader.load(getClass().getResource("/fxml/startScene.fxml"));
+            stage = (Stage) newGame.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/startScene.fxml"));
+            root = loader.load();
 
-
-    	MainApp.logger.warn(x + " " + y);
-    }
-    @FXML   
-    public void canvasOnDragOver(DragEvent m) {   
-    	Image img = new Image(this.getClass().getResourceAsStream("/sprites/spr_1.png"));
-    	gc.drawImage(img, m.getSceneX()-24, m.getSceneY()-24);
-    	MainApp.logger.warn(m.getSceneX() + " " + m.getSceneY());
-    }
-    
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(GameFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }    
+   
     public void initData(String nev) {
-        playerName.setText(nev);        
+        playerName.setText(nev);     
+        
     }
     
     private void drawBoard() {
