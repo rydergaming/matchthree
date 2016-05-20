@@ -1,4 +1,4 @@
-package hu.unideb.inf.rydergaming.matchthree;
+package hu.unideb.inf.rydergaming.matchthree.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import hu.unideb.inf.rydergaming.matchthree.model.Board;
+import hu.unideb.inf.rydergaming.matchthree.model.XMLParser;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -100,8 +102,6 @@ public class GameFXMLController implements Initializable {
 	            		for (int j=0; j<8; j++)
 	            			if (br.offset[i][j]<i*46){
 	            				br.offset[i][j]+=2;
-	            				//System.out.println("offsetting: " + i + " " +j);
-	            				//System.out.println("With value: " + br.offset[i][j]);
 	            			}
             	points.setText("Points:\n" + Integer.toString(br.getPoints()));
                 drawBoard();
@@ -150,7 +150,6 @@ public class GameFXMLController implements Initializable {
         		//System.out.println("Starting showing the stuff:");
         		//br.showBoard();
         		br.fallBoard();
-        		br.setMoves(br.getMoves()-1);
         		if (br.getMoves() == 0 ) {
         			try {
         				lista.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));

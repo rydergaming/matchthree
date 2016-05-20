@@ -1,4 +1,4 @@
-package hu.unideb.inf.rydergaming.matchthree;
+package hu.unideb.inf.rydergaming.matchthree.model;
 
 import javafx.application.Application;
 

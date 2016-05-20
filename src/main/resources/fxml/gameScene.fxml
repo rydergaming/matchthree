@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.rydergaming.matchthree.GameFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.rydergaming.matchthree.controller.GameFXMLController">
    <children>
       <Label fx:id="playerName" layoutX="390.0" layoutY="16.0" text="Dummy" />
       <Canvas id="canvas" fx:id="canvas" height="368.0" layoutX="16.0" layoutY="16.0" onMouseClicked="#canvasOnMouseClicked" width="368.0" />

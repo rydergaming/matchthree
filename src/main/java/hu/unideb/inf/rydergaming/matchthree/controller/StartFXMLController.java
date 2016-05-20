@@ -1,4 +1,4 @@
-package hu.unideb.inf.rydergaming.matchthree;
+package hu.unideb.inf.rydergaming.matchthree.controller;
 
 import java.io.IOException;
 import java.net.URL;

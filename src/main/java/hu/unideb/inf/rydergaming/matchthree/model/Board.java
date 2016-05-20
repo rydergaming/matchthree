@@ -1,4 +1,4 @@
-package hu.unideb.inf.rydergaming.matchthree;
+package hu.unideb.inf.rydergaming.matchthree.model;
 
 import java.util.*;
 
@@ -6,15 +6,12 @@ public class Board {
 	private int[][] board = new int[8][8];
 	public double[][] offset = new double[8][8];
 	public int cellheight = 0;
-	private int moves = 20;
+	private int moves = 21;
 
 	public int getMoves() {
 		return moves;
 	}
 
-	public void setMoves(int moves) {
-		this.moves = moves;
-	}
 
 	private int points = 0;
 	public int getPoints() {
@@ -47,22 +44,24 @@ public class Board {
 		
 	}
 	
-	public void showBoard() {
-		
+	public String getBoard() {
+		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<8; i++) {
 			for (int j=0; j<8; j++)
-				System.out.print(Integer.toString(board[i][j]) + " ");
-				System.out.println();
+				sb.append(Integer.toString(board[i][j])).append(" ");
+				sb.append("\n");
 		}
+		return sb.toString();
 	}
 
-	public void showOffset() {
-		
+	public String getOffset() {
+		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<8; i++) {
 			for (int j=0; j<8; j++)
-				System.out.print(Double.toString(offset[i][j]) + " ");
-				System.out.println();
+				sb.append(Double.toString(offset[i][j])).append(" ");
+				sb.append("\n");
 		}
+		return sb.toString();
 	}
 	
 	public int getElement(int row, int column){
@@ -96,28 +95,10 @@ public class Board {
 		//showOffset();
 					
 	}
-	
-	public void switchPositions(Globe a, Globe b) {
-		if (a.getRow() == b.getRow() || a.getColumn() == b.getColumn()) {
-			Globe c = new Globe(a.getValue(),a.getRow(),a.getColumn());
-			
-			a.setValue(b.getValue());
-			a.setRow(b.getRow());
-			a.setColumn(b.getColumn());
-			b.setValue(c.getValue());
-			b.setRow(c.getRow());
-			b.setColumn(c.getColumn());
 
-		}
-				
-	}
-	
 	public void switchPositions(int aX, int aY, int bX, int bY) {
 		if (aX != bX && aY != bY)
 			return;
-/*		System.out.println("Switching");
-		System.out.println(aX + " " + aY + " " + bX + " " + bY);
-		System.out.println(board[aX][aY] + " " + board[bX][bY]);*/
 		int c = board[aX][aY];
 			board[aX][aY] = board[bX][bY];
 			board[bX][bY] = c;
@@ -142,6 +123,7 @@ public class Board {
 		}	
 		if (hasMatch) {
 			//MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
+			this.moves--;
 		}
 		return hasMatch;
 	}
@@ -177,6 +159,7 @@ public class Board {
 		}	
 		if (hasMatch) {
 			MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
+			this.moves--;
 		}
 		return hasMatch;
 	}
