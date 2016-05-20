@@ -6,8 +6,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,7 +17,6 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -28,47 +25,87 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
+/**
+ * Controller class of the gameScene.fxml.
+ * @author Ryder
+ *
+ */
 public class GameFXMLController implements Initializable {
 
-    
+    /**
+     * Label of the player's name.
+     */
     @FXML
     Label playerName;
     
+    /**
+     * Canvas where the drawing happens.
+     */
     @FXML
     Canvas canvas; 
     
+    /**
+     * TextArea containing the high score.
+     */
     @FXML
     TextArea textArea;
     
+    /**
+     * Label containing the player's moves.
+     */
     @FXML
     Label movesLeft;
     
+    /**
+     * Label containing the player's points.
+     */
     @FXML
     Label points;
     
+    /**
+     * Button that returns to the start Scene.
+     */
     @FXML
     Button newGame;
 
-    Stage stage;
-    Scene scene;
-    
-   
+    /**
+     * GraphicsContext containing the drawings.
+     */
     GraphicsContext gc;
+    /**
+     * boolean variable used for switching nodes.
+     */
     boolean picked = false;
+    
+    /**
+     * boolean falling.
+     */
     boolean falling = false;
+    
+    /**
+     * A 2D ArrayList containing the score board.
+     */
     List<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
     
+    /**
+     * 
+     */
     int sX, sY, tX, tY;
     
+    /**
+     * Board class.
+     * 
+     */
     Board br;
+    
     /**
      * Initializes the controller class.
+     * 
+     * Sets up the GrapichsContext, Board and loads score table. 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -103,7 +140,7 @@ public class GameFXMLController implements Initializable {
 	            			if (br.offset[i][j]<i*46){
 	            				br.offset[i][j]+=2;
 	            			}
-            	points.setText("Points:\n" + Integer.toString(br.getPoints()));
+            	
                 drawBoard();
                 if (br.getMoves() == 0) {
                 	gc.setGlobalAlpha(0.5);
@@ -118,7 +155,10 @@ public class GameFXMLController implements Initializable {
         }.start();
     }    
     
-    
+    /**
+     * Used to move nodes around the board.
+     * @param m MouseEvent checks for clicking.
+     */
     @FXML
     public void canvasOnMouseClicked(MouseEvent m) {
     	if (br.getMoves()==0)
@@ -127,18 +167,12 @@ public class GameFXMLController implements Initializable {
         	//int x, y;
         	sY = Math.floorDiv((int) m.getX(), 46);
         	sX = Math.floorDiv((int) m.getY(), 46);
-			//MainApp.logger.warn(sX + " " +sY +"\n" + tX +" " + tY);
-
-            //br.getElement(sX, sY).showValues();
         	picked = true; 
         	return;
     	}
     	if (picked) {
         	tY = Math.floorDiv((int) m.getX(), 46);
         	tX = Math.floorDiv((int) m.getY(), 46); 
-          //  br.getElement(sX, sY).showValues();
-          //  br.getElement(tX, tY).showValues();
-        	//System.out.println(sX + " " + sY + " " + tX + " " + tY);
         	br.switchPositions(sX,sY,tX,tY);
     		//drawBoard();
 
@@ -150,8 +184,10 @@ public class GameFXMLController implements Initializable {
         		//System.out.println("Starting showing the stuff:");
         		//br.showBoard();
         		br.fallBoard();
+        		points.setText("Points:\n" + Integer.toString(br.getPoints()));
         		if (br.getMoves() == 0 ) {
         			try {
+        				
         				lista.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
 						File file = new File(this.getClass().getResource("/score.xml").toURI());
 						XMLParser.saveXML(lista, file);
@@ -188,6 +224,10 @@ public class GameFXMLController implements Initializable {
     	}
 
     }
+    /**
+     * Used to go back to the launch screen.
+     * @param m MouseEvent checks for clicking.
+     */
     @FXML
     public void newGameEvent(MouseEvent m) {
     	try {
@@ -207,11 +247,18 @@ public class GameFXMLController implements Initializable {
         }   
     }    
    
+    /**
+     * Initializes the player's name.
+     * @param nev String the name of the player.
+     */
     public void initData(String nev) {
         playerName.setText(nev);     
         
     }
     
+    /**
+     * Draws the board to the GraphicsContext.
+     */
     private void drawBoard() {
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());

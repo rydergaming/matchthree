@@ -2,23 +2,58 @@ package hu.unideb.inf.rydergaming.matchthree.model;
 
 import java.util.*;
 
+/**
+ * A class representing the player's board, moves and score.
+ * @author Ryder
+ *
+ */
+
 public class Board {
+	/**
+	 * A 2D array containing the values.
+	 */
 	private int[][] board = new int[8][8];
-	public double[][] offset = new double[8][8];
-	public int cellheight = 0;
+	
+	/**
+	 * A 2D array containing the y coordinates of the values.
+	 */
+	public int[][] offset = new int[8][8];
+	
+	/**
+	 * Variable containing the total moves of the player.
+	 */
 	private int moves = 21;
 
+	/**
+	 * The points of the player.
+	 */
+	private int points = 0;
+	
+	/**
+	 * Returns the remaining moves of the player.
+	 * @return int the remaining moves
+	 */
 	public int getMoves() {
 		return moves;
 	}
 
+	/**
+	 * Return the current points of the player.
+	 * @return int the current points
+	 */
 
-	private int points = 0;
 	public int getPoints() {
 		return points;
 	}
 
+	/**
+	 * A Random variable so that it can be seeded.
+	 */
 	private Random rnd = new Random();	
+	
+	/**
+	 * Constructor of Board class.
+	 */
 	public Board() {
 
 		rnd.setSeed(19950622);
@@ -44,6 +79,10 @@ public class Board {
 		
 	}
 	
+	/**
+	 * Return the current values in the board.
+	 * @return String A string representing the board.
+	 */	
 	public String getBoard() {
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<8; i++) {
@@ -54,6 +93,10 @@ public class Board {
 		return sb.toString();
 	}
 
+	/**
+	 * Return the current y coordinate values in the board.
+	 * @return String A string representing the y coordinates.
+	 */
 	public String getOffset() {
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<8; i++) {
@@ -64,11 +107,19 @@ public class Board {
 		return sb.toString();
 	}
 	
+	/**
+	 * Returns the selected element from the board.
+	 * @param row index of the board array.
+	 * @param column index of the board array.
+	 * @return int the selected element's value from the board.
+	 */
 	public int getElement(int row, int column){
 		return board[row][column];		
 	}
 	
-	
+	/**
+	 * Moves elements downwards and fills the board.
+	 */
 	public void fallBoard() {
 		int tmp = 8;
 		while (tmp>0) {	
@@ -96,6 +147,13 @@ public class Board {
 					
 	}
 
+	/**
+	 * Switches the position of two elements on the board.
+	 * @param aX row index of the first element.
+	 * @param aY column index of the first element.
+	 * @param bX row index of the second element.
+	 * @param bY column index of the second element.
+	 */
 	public void switchPositions(int aX, int aY, int bX, int bY) {
 		if (aX != bX && aY != bY)
 			return;
@@ -104,6 +162,13 @@ public class Board {
 			board[bX][bY] = c;
 	}
 	
+	/**
+	 * Checks horizontally if there's a match at the given parameters.
+	 * @param i int row index of starting element. 
+	 * @param j int column index inf the starting element.
+	 * @param givePoints boolean whether give points or not. 
+	 * @return boolean returns true if there was a match.
+	 */
 	public boolean checkRecursiveHorStart(int i, int j, boolean givePoints) {
 		boolean hasMatch = false;
 		int start, end;
@@ -127,7 +192,14 @@ public class Board {
 		}
 		return hasMatch;
 	}
-	
+
+	/**
+	 * Checks how far there are matches in a given direction.
+	 * @param i int starting row index.
+	 * @param j int starting column index.
+	 * @param dir int direction of the checking. 1 checks left, -1 checks right.
+	 * @return int returns 1 if the neighbor node is the same.
+	 */
 	public int checkRecursiveHor(int i, int j, int dir) {
 		//int debugValue = 0;
 			if (j+dir<0 || j+dir>7)
@@ -140,6 +212,13 @@ public class Board {
 
 	}
 	
+	/**
+	 * Checks vertically if there's a match at the given parameters.
+	 * @param i int row index of starting element. 
+	 * @param j int column index inf the starting element.
+	 * @param givePoints boolean whether give points or not. 
+	 * @return boolean returns true if there was a match.
+	 */	
 	public boolean checkRecursiveVerStart(int i, int j, boolean givePoints) {
 		boolean hasMatch = false;
 		int start, end;
@@ -163,7 +242,14 @@ public class Board {
 		}
 		return hasMatch;
 	}
-	
+
+	/**
+	 * Checks how far there are matches in a given direction.
+	 * @param i int starting row index.
+	 * @param j int starting column index.
+	 * @param dir int the direction of the checking. 1 checks down, -1 checks up.
+	 * @return int returns 1 if the neighbor node is the same. 
+	 */
 	public int checkRecursiveVer(int i, int j, int dir) {
 		//int debugValue = 0;
 			if (i+dir<0 || i+dir>7)

@@ -17,18 +17,35 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controller class of the startScene.fxml.
+ * @author Ryder
+ *
+ */
 public class StartFXMLController implements Initializable {
     
+	/**
+	 * Label containing the game's title.
+	 */
     @FXML
     private Label label;
     
+    /**
+     * Button starts the game.
+     */
     @FXML
     private Button start_game;
+    
+    /**
+     * TextField containing the player's name.
+     */
     @FXML
     private TextField playerName;
     
-    String nev = "";
-    
+    /**
+     * Action that changes scene to change the scene.
+     * @param event ActionEvent changes the scene.
+     */
     @FXML
     private void startHandleButtonAction(ActionEvent event) {
         try {
@@ -37,10 +54,9 @@ public class StartFXMLController implements Initializable {
             //root = FXMLLoader.load(getClass().getResource("Scene2.fxml"));
             stage = (Stage) start_game.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameScene.fxml"));
-            root = loader.load();
-            nev = playerName.getText();
+            root = loader.load();            
                         
-            loader.<GameFXMLController>getController().initData(nev);
+            loader.<GameFXMLController>getController().initData(playerName.getText());
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -51,11 +67,18 @@ public class StartFXMLController implements Initializable {
         }        
     }
     
+    /**
+     * Button that shuts down the game.
+     * @param event ActionEvent that checks for mouseclicks.
+     */    
     @FXML
     private void quitHandleButtonAction(ActionEvent event) {
     	System.exit(0);
     }
  
+    /**
+     * Auto generated initialize class for the controller.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

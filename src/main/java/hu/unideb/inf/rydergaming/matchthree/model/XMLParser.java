@@ -27,14 +27,30 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Class for loading and saving the score table as an XML file.
+ * @author Ryder
+ *
+ */
 public class XMLParser {
 
+	/**
+	 * Loads the score table from an XML file.
+	 * @param input File the file to load the score table from.
+	 * @return List Returns a 2D ArrayList sorted by the players' score.
+	 */
 	public static List loadXML(File input) {
 		List<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
 		try {			
 			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
+			if (doc.equals(null)) {
+				MainApp.logger.error("Error with score table.");
+				return null;
+				
+			}
 			NodeList nList = doc.getElementsByTagName("player");
 			//return doc;
+
 			for (int i=0; i<nList.getLength(); i++) {
 				Node node = nList.item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -68,6 +84,11 @@ public class XMLParser {
 		
 	}
 	
+	/**
+	 * Saves the list to an XML file.
+	 * @param lista List a 2D arraylist of the score table.
+	 * @param file File the file to save the score table to.
+	 */
 	public static void saveXML(List<ArrayList<String>> lista, File file) {
 		try {
 			Document dom  = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();

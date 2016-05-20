@@ -194,12 +194,6 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.4.201502262128</version>
-				
-				<configuration>
-					<excludes>
-						<exclude>hu/unideb/inf/elementbound/celldweller/view/**/*.class</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>

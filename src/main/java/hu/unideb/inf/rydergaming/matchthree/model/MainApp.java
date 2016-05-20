@@ -1,9 +1,6 @@
 package hu.unideb.inf.rydergaming.matchthree.model;
 
 import javafx.application.Application;
-
-import java.io.File;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +9,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
+/**
+ * Entry class of the program.
+ * @author Ryder
+ *
+ */
 public class MainApp extends Application {
+	/**
+	 * slf4j Logger variable.
+	 */
 	public static Logger logger = LoggerFactory.getLogger(Board.class);
+	/**
+	 * Sets up and starts the first scene.
+	 */
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/startScene.fxml"));

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <scores>
 	<player>
-		<name>Asd</name>
-		<score>34</score>
+		<name>A</name>
+		<score>1</score>
 	</player>
 	<player>
-		<name>Asdasd</name>
-		<score>341</score>
+		<name>B</name>
+		<score>2</score>
 	</player>
 	<player>
-		<name>Asdasdsa</name>
-		<score>3432</score>
+		<name>C</name>
+		<score>3</score>
 	</player>
 </scores>
