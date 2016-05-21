@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import hu.unideb.inf.rydergaming.matchthree.model.Board;
 import hu.unideb.inf.rydergaming.matchthree.model.XMLParser;
@@ -35,6 +36,10 @@ import javafx.stage.Stage;
  *
  */
 public class GameFXMLController implements Initializable {
+	/**
+	 * Logger variable
+	 */
+	final static Logger logger = LoggerFactory.getLogger(GameFXMLController.class);
 
     /**
      * Label of the player's name.
@@ -109,6 +114,7 @@ public class GameFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    	logger.info("Initialize stared.");
         gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -243,7 +249,8 @@ public class GameFXMLController implements Initializable {
             stage.show();
             
         } catch (IOException ex) {
-            Logger.getLogger(GameFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            //logger.getLogger(GameFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        	logger.error("newGameEvent exception.");
         }   
     }    
    

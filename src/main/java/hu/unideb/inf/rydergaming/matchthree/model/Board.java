@@ -2,6 +2,9 @@ package hu.unideb.inf.rydergaming.matchthree.model;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A class representing the player's board, moves and score.
  * @author Ryder
@@ -9,6 +12,11 @@ import java.util.*;
  */
 
 public class Board {
+	/**
+	 * Logger variable
+	 */
+	final static Logger logger = LoggerFactory.getLogger(Board.class);
+	
 	/**
 	 * A 2D array containing the values.
 	 */
@@ -187,7 +195,8 @@ public class Board {
 				hasMatch = true;
 		}	
 		if (hasMatch) {
-			//MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
+			if (givePoints)
+				logger.info("Found horizontal match at {0} {1}",i,j);
 			this.moves--;
 		}
 		return hasMatch;
@@ -227,7 +236,7 @@ public class Board {
 		start = checkRecursiveVer(i,j,-1);
 		end = checkRecursiveVer(i,j,1);
 		//if (i == 3)
-		//System.out.println("start end: " + start + end);
+		logger.debug("Vertical end: {0} start: {1}",end,start);
 		if (end + start >=2)
 			for (int k=i - start; k<=i + end; k++) {
 				if (givePoints) {
@@ -237,7 +246,8 @@ public class Board {
 				hasMatch = true;
 		}	
 		if (hasMatch) {
-			MainApp.logger.warn(Integer.toString(i) + " " + Integer.toString(j));
+			if (givePoints)
+				logger.info("Found vertical match at {0} {1}",i,j);			
 			this.moves--;
 		}
 		return hasMatch;

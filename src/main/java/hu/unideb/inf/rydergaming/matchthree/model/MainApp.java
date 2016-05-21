@@ -18,12 +18,13 @@ public class MainApp extends Application {
 	/**
 	 * slf4j Logger variable.
 	 */
-	public static Logger logger = LoggerFactory.getLogger(Board.class);
+	final static Logger logger = LoggerFactory.getLogger(MainApp.class);
 	/**
 	 * Sets up and starts the first scene.
 	 */
     @Override
     public void start(Stage stage) throws Exception {
+    	logger.info("Starting main stage.");
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/startScene.fxml"));
     
         Scene scene = new Scene(root);
@@ -46,6 +47,7 @@ public class MainApp extends Application {
         //File file = new File("D:/fss/MatchThree/src/main/resources/score.xml");
         //XMLParser.loadXML(file);   
     	//XMLParser.saveXML(null);
+    	
         launch(args);
     }
 

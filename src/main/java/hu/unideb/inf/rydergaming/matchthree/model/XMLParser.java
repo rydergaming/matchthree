@@ -41,16 +41,9 @@ public class XMLParser {
 	 */
 	public static List loadXML(File input) {
 		List<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
-		try {			
+		try {	
 			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
-			if (doc.equals(null)) {
-				MainApp.logger.error("Error with score table.");
-				return null;
-				
-			}
-			NodeList nList = doc.getElementsByTagName("player");
-			//return doc;
-
+			NodeList nList = doc.getElementsByTagName("player");			
 			for (int i=0; i<nList.getLength(); i++) {
 				Node node = nList.item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -112,7 +105,6 @@ public class XMLParser {
 	            //optimus.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "roles.dtd");
 	            optimus.setOutputProperty(OutputKeys.INDENT, "yes");
 	            optimus.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-	            // send DOM to file
 	            optimus.transform(new DOMSource(dom), 
 	                                 new StreamResult(new FileOutputStream(file)));
 
