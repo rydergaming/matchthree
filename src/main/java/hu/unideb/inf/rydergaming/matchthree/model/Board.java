@@ -30,7 +30,7 @@ public class Board {
 	/**
 	 * Variable containing the total moves of the player.
 	 */
-	private int moves = 21;
+	private int moves = 22;
 
 	/**
 	 * The points of the player.
@@ -67,7 +67,7 @@ public class Board {
 		rnd.setSeed(19950622);
 		for (int i=0; i<8; i++)
 			for (int j=0; j<8; j++){
-				board[i][j] = rnd.nextInt(6);
+				board[i][j] = rnd.nextInt(7);
 				offset[i][j] = -1000;
 			}
 
@@ -147,7 +147,7 @@ public class Board {
 		for (int i=7; i>=0; i--)
 			for (int j=0; j<8; j++)
 				if (board[i][j] == -1)	{
-					board[i][j] = rnd.nextInt(6);
+					board[i][j] = rnd.nextInt(7);
 					offset[i][j] = -46;
 				}
 		//showBoard();
