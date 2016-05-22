@@ -43,12 +43,11 @@ public class MainApp extends Application {
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        //File file = new File("D:/fss/MatchThree/src/main/resources/score.xml");
-        //XMLParser.loadXML(file);   
-    	//XMLParser.saveXML(null);
-    	
+    public static void main(String[] args) {   
+
         launch(args);
+        logger.info("Error deploying JavaFX. Program is closing.");
+        System.exit(-1);
     }
 
 }

@@ -94,10 +94,10 @@ public class GameFXMLController implements Initializable {
     /**
      * A 2D ArrayList containing the score board.
      */
-    List<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
+    List<ArrayList<String>> scoreBoard = new ArrayList<ArrayList<String>>();
     
     /**
-     * 
+     * Variables used for changing values on the board.
      */
     int sX, sY, tX, tY;
     
@@ -122,7 +122,7 @@ public class GameFXMLController implements Initializable {
         drawBoard();
 
         try {
-			lista = XMLParser.loadXML(new File(this.getClass().getResource("/score.xml").toURI()));			
+        	scoreBoard = XMLParser.loadXML(new File(this.getClass().getResource("/score.xml").toURI()));			
 			//XMLParser.saveXML(lista, file);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -130,7 +130,7 @@ public class GameFXMLController implements Initializable {
 		}
 
         textArea.setEditable(false);
-		for (List l: lista) {
+		for (List l: scoreBoard) {
 			textArea.appendText(l.get(0).toString() + ":  " + l.get(1).toString());
 			textArea.appendText("\n");
 			
@@ -194,9 +194,9 @@ public class GameFXMLController implements Initializable {
         		if (br.getMoves() == 0 ) {
         			try {
         				
-        				lista.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
+        				scoreBoard.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
 						File file = new File(this.getClass().getResource("/score.xml").toURI());
-						XMLParser.saveXML(lista, file);
+						XMLParser.saveXML(scoreBoard, file);
 						file = null;
 					} catch (URISyntaxException e) {
 						// TODO Auto-generated catch block
@@ -214,18 +214,14 @@ public class GameFXMLController implements Initializable {
         		        	}
         				}
         		}
-        		//System.out.println("=========================");
-        		//br.showBoard();
         		movesLeft.setText("Moves left: " + br.getMoves());
         	}
         		
 
         	else {
         		br.switchPositions(sX,sY,tX,tY);
-        		System.out.println("Switched board back");
+        		logger.info("Switched board back");
         	}
-        		
-    		//drawBoard();
     		picked = false;
     	}
 
@@ -239,7 +235,6 @@ public class GameFXMLController implements Initializable {
     	try {
             Stage stage;
             Parent root;
-            //root = FXMLLoader.load(getClass().getResource("/fxml/startScene.fxml"));
             stage = (Stage) newGame.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/startScene.fxml"));
             root = loader.load();
@@ -249,7 +244,6 @@ public class GameFXMLController implements Initializable {
             stage.show();
             
         } catch (IOException ex) {
-            //logger.getLogger(GameFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         	logger.error("newGameEvent exception.");
         }   
     }    
@@ -277,9 +271,7 @@ public class GameFXMLController implements Initializable {
     			String tmpString = "/sprites/spr_" + Integer.toString(tmp+1)+".png";
     	        Image img = new Image(this.getClass()
     	        		.getResourceAsStream(tmpString));
-    	        //Globe tmpOffset = br.offset[i][j];
     	        gc.drawImage(img, i*46, br.offset[j][i]);
-    	        //gc.drawImage(img,i*46, j*46);
     		}
     	}
     	if (picked) {

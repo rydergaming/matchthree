@@ -34,7 +34,7 @@ public class StartFXMLController implements Initializable {
      * Button starts the game.
      */
     @FXML
-    private Button start_game;
+    private Button startGame;
     
     /**
      * TextField containing the player's name.
@@ -51,8 +51,8 @@ public class StartFXMLController implements Initializable {
         try {
             Stage stage;
             Parent root;
-            //root = FXMLLoader.load(getClass().getResource("Scene2.fxml"));
-            stage = (Stage) start_game.getScene().getWindow();
+
+            stage = (Stage) startGame.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/gameScene.fxml"));
             root = loader.load();            
                         

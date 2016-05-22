@@ -21,6 +21,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,6 +36,11 @@ import org.xml.sax.SAXException;
  */
 public class XMLParser {
 
+	/**
+	 * Logger variable.
+	 */
+	final static Logger logger = LoggerFactory.getLogger(XMLParser.class);
+	
 	/**
 	 * Loads the score table from an XML file.
 	 * @param input File the file to load the score table from.
@@ -64,14 +71,11 @@ public class XMLParser {
 
 
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return lista;
 		
@@ -108,14 +112,13 @@ public class XMLParser {
 	            optimus.transform(new DOMSource(dom), 
 	                                 new StreamResult(new FileOutputStream(file)));
 
-	        } catch (TransformerException te) {
-	            System.out.println(te.getMessage());
-	        } catch (IOException ioe) {
-	            System.out.println(ioe.getMessage());
+	        } catch (TransformerException e) {
+				logger.error(e.getMessage());
+	        } catch (IOException e) {
+				logger.error(e.getMessage());
 	        }
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 }
