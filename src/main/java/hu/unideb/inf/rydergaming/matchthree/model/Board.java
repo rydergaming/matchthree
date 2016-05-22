@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class Board {
 	/**
-	 * Logger variable
+	 * Logger variable.
 	 */
 	final static Logger logger = LoggerFactory.getLogger(Board.class);
 	

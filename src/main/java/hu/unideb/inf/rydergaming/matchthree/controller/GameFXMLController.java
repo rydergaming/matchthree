@@ -37,7 +37,7 @@ import javafx.stage.Stage;
  */
 public class GameFXMLController implements Initializable {
 	/**
-	 * Logger variable
+	 * Logger variable.
 	 */
 	final static Logger logger = LoggerFactory.getLogger(GameFXMLController.class);
 
