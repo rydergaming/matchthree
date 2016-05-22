@@ -11,9 +11,9 @@
    <children>
       <Label fx:id="playerName" layoutX="390.0" layoutY="16.0" text="Dummy" />
       <Canvas id="canvas" fx:id="canvas" height="368.0" layoutX="16.0" layoutY="16.0" onMouseClicked="#canvasOnMouseClicked" width="368.0" />
-      <Label fx:id="points" alignment="CENTER" layoutX="558.0" layoutY="16.0" text="Points" />
+      <Label fx:id="points" alignment="CENTER" layoutX="558.0" layoutY="16.0" text="Points:" />
       <TextArea fx:id="textArea" layoutX="390.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" />
-      <Label fx:id="movesLeft" alignment="CENTER" contentDisplay="CENTER" layoutX="476.0" layoutY="291.0" text="Label" textAlignment="CENTER" />
+      <Label fx:id="movesLeft" alignment="CENTER" contentDisplay="CENTER" layoutX="390.0" layoutY="290.0" text="Label" textAlignment="CENTER" />
       <Button fx:id="newGame" layoutX="453.0" layoutY="339.0" mnemonicParsing="false" onMouseClicked="#newGameEvent" text="New Game" />
       
    </children>
