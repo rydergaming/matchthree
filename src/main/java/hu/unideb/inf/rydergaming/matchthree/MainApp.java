@@ -1,4 +1,4 @@
-package hu.unideb.inf.rydergaming.matchthree.model;
+package hu.unideb.inf.rydergaming.matchthree;
 
 import javafx.application.Application;
 import org.slf4j.Logger;
@@ -35,6 +35,11 @@ public class MainApp extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop() throws Exception{
+    	System.exit(0);
+    	
+    }
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be

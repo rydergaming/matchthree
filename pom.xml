@@ -40,7 +40,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mainClass>hu.unideb.inf.rydergaming.matchthree.model.MainApp</mainClass>
+        <mainClass>hu.unideb.inf.rydergaming.matchthree.MainApp</mainClass>
     </properties>
 
 	<dependencies>
@@ -78,7 +78,7 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>hu.unideb.inf.rydergaming.matchthree.model.MainApp</mainClass>
+                            <mainClass>hu.unideb.inf.rydergaming.matchthree.MainApp</mainClass>
                         </configuration>
                     </execution>
                 </executions>

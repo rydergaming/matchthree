@@ -106,7 +106,6 @@ public class XMLParser {
 	            Transformer optimus = TransformerFactory.newInstance().newTransformer();
 	            optimus.setOutputProperty(OutputKeys.METHOD, "xml");
 	            optimus.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-	            //optimus.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "roles.dtd");
 	            optimus.setOutputProperty(OutputKeys.INDENT, "yes");
 	            optimus.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 	            optimus.transform(new DOMSource(dom), 
