@@ -111,7 +111,7 @@ public class GameFXMLController implements Initializable {
      * Board class.
      * 
      */
-    Board br;
+    Board br = new Board();
     
     /**
      * Initializes the controller class.
@@ -124,7 +124,6 @@ public class GameFXMLController implements Initializable {
         gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        br = new Board();
         drawBoard();
 		try {
 			String tmpPath = System.getProperty("user.home") + "/.matchthree";
@@ -136,10 +135,6 @@ public class GameFXMLController implements Initializable {
 			logger.debug(System.getProperty("os.name"));
 			if (System.getProperty("os.name").startsWith("Windows"))
 				Files.setAttribute(path, "dos:hidden", true);
-			/*if (hidden != null && !hidden) {
-				path.setAttribute("dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
-			}*/
-			
 			if (!tmpScore.exists()) {
 				tmpScore.createNewFile();
 				XMLParser.saveXML(scoreBoard, tmpScore);
@@ -147,9 +142,11 @@ public class GameFXMLController implements Initializable {
 
 			logger.debug("The file:" + tmpScore.exists());
 			scoreBoard = XMLParser.loadXML(tmpScore);
+			path = null;
+			tmpPath = null;
+			tmpDir = null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				logger.error(e.getMessage());
 		}
 
 
@@ -218,6 +215,7 @@ public class GameFXMLController implements Initializable {
     				File outFile = new File(tmpPath  + "/score.xml");        				
     				scoreBoard.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
 					XMLParser.saveXML(scoreBoard, outFile);
+					outFile = null;
         		}
         		boolean checkNew = true;
         		while (checkNew) {
@@ -279,20 +277,29 @@ public class GameFXMLController implements Initializable {
     private void drawBoard() {
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		StringBuilder sb;
+		Image img;
     	for (int i=0; i<8; i++) {
     		for (int j=0; j<8; j++) {
     			int tmp = br.getElement(j, i);
     			if (tmp == -1)
     				continue;
-    			String tmpString = "sprites/spr_" + Integer.toString(tmp+1)+".png";
-    	        Image img = new Image(this.getClass().getClassLoader()
+    			sb = new StringBuilder();
+    			sb.append("sprites/spr_").append(Integer.toString(tmp+1)).append(".png");
+    			String tmpString = sb.toString();
+    	        img = new Image(this.getClass().getClassLoader()
     	        		.getResourceAsStream(tmpString));
     	        gc.drawImage(img, i*46, br.offset[j][i]);
+    	        img = null;
     		}
     	}
     	if (picked) {
-            Image img = new Image(this.getClass().getClassLoader().getResourceAsStream("sprites/spr_edge.png"));
+            img = new Image(this.getClass().getClassLoader().getResourceAsStream("sprites/spr_edge.png"));
             gc.drawImage(img, sY*46, sX*46);
+            img = null;
     	}
+    	sb = null;
+    	img = null;
+    	System.gc();
     }
 }

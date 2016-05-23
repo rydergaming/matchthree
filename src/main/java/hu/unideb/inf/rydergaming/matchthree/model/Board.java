@@ -137,19 +137,16 @@ public class Board {
 	public void fallBoard() {
 		int tmp = 8;
 		while (tmp>0) {	
-			for (int i=7; i>=1;i--)
-				for (int j=0; j<=7;j++) {
-					if (board[i][j] == -1) {
-						if (i != 0) {
-							board[i][j] = board[i-1][j];
-							offset[i][j] = offset[i-1][j];
-							board[i-1][j] = -1;							
-						}									
-					}	
+			for (int i=6; i >=0; i--)
+				for (int j=0; j<8; j++) {
+					if (board[i+1][j] == -1) {
+						board[i+1][j] = board[i][j];
+						offset[i+1][j] = offset[i][j];
+						board[i][j] = -1;
+					}
 				}
 			tmp--;
 		}
-
 		for (int i=0; i<8; i++)
 			for (int j=0; j<8; j++)
 				if (board[i][j] == -1)	{
