@@ -12,7 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -113,6 +115,25 @@ public class GameFXMLController implements Initializable {
      */
     Board br = new Board();
     
+    Map<Integer, Image> imageCache = new HashMap<>();
+    
+    private Image getImage(int i) {
+    	if(!imageCache.containsKey(i)) {
+    		StringBuilder sb = new StringBuilder()
+    				.append("sprites/spr_")
+    				.append(Integer.toString(i+1))
+    				.append(".png");
+
+	        Image img = new Image(this.getClass().getClassLoader()
+	        		.getResourceAsStream(sb.toString()));
+	        
+	        imageCache.put(i, img);
+	        return img;
+    	}
+    	
+    	return imageCache.get(i);
+    }
+    
     /**
      * Initializes the controller class.
      * 
@@ -206,7 +227,9 @@ public class GameFXMLController implements Initializable {
 
         	
         	if (br.checkRecursiveHorStart(tX, tY, true) || br.checkRecursiveVerStart(tX, tY, true)) {
+        		logger.info("Match:\n" + br);
         		br.fallBoard();
+        		logger.info("Fall:\n" + br);
         		points.setText("Points:\n" + Integer.toString(br.getPoints()));
         		br.setMoves(br.getMoves()-1);
         		if (br.getMoves() == 0 ) {
@@ -223,7 +246,9 @@ public class GameFXMLController implements Initializable {
         			for (int i=0;i<8;i++)
         				for (int j=0; j<8; j++) {
         		        	if (br.checkRecursiveHorStart(i, j, true) || br.checkRecursiveVerStart(i, j, true)) {
+        		        		logger.info("Match:\n" + br);
         		        		br.fallBoard();
+        		        		logger.info("Fall:\n" + br);
         		        		checkNew = true;
         		        	}
         				}
@@ -284,12 +309,12 @@ public class GameFXMLController implements Initializable {
     			int tmp = br.getElement(j, i);
     			if (tmp == -1)
     				continue;
-    			sb = new StringBuilder();
+    			/*sb = new StringBuilder();
     			sb.append("sprites/spr_").append(Integer.toString(tmp+1)).append(".png");
     			String tmpString = sb.toString();
     	        img = new Image(this.getClass().getClassLoader()
-    	        		.getResourceAsStream(tmpString));
-    	        gc.drawImage(img, i*46, br.offset[j][i]);
+    	        		.getResourceAsStream(tmpString));*/
+    	        gc.drawImage(getImage(tmp), i*46, br.offset[j][i]);
     	        img = null;
     		}
     	}

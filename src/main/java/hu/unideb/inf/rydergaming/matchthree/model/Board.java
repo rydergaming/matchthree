@@ -264,4 +264,36 @@ public class Board {
 		return 1 + checkRecursiveVer(i+dir, j, dir);
 
 	}
+	
+	/**
+	 * toString method that returns the board and the offset.
+	 * @return String a string containing the board and the offset.
+	 */
+	public String toString() {
+		StringBuilder strb = new StringBuilder();
+		
+		for(int i = 0; i < 8; i++) {
+			strb.append('[');
+			for(int j = 0; j < 8; j++) { 
+				if(board[i][j] < 0)
+					strb.append(" - ");
+				else 
+					strb.append(' ')
+						.append(board[i][j])
+						.append(' ');
+			}
+			
+			strb.append("]    [");
+			for(int j = 0; j < 8; j++) { 
+				strb.append(' ')
+					.append(String.format("%1$-3s", offset[i][j]))
+					.append(' ');
+			}
+			
+			strb.append("]\n");
+		}
+		
+		
+		return strb.toString();
+	}
 }
