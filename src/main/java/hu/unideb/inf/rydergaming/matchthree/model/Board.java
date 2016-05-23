@@ -30,7 +30,7 @@ public class Board {
 	/**
 	 * Variable containing the total moves of the player.
 	 */
-	private int moves = 22;
+	private int moves = 20;
 
 	/**
 	 * The points of the player.
@@ -45,6 +45,13 @@ public class Board {
 		return moves;
 	}
 
+	/**
+	 * Sets the points of the player.
+	 * @param moves
+	 */
+	public void setMoves(int moves) {
+		this.moves = moves;
+	}
 	/**
 	 * Return the current points of the player.
 	 * @return int the current points
@@ -79,7 +86,6 @@ public class Board {
 				checkRecursiveVerStart(i, j, false);
 			}	
 		fallBoard();
-		//showBoard();
 		for (int i=0; i<8 ;i++)
 			for (int j=0;j<8;j++) {
 				offset[i][j] = i*46;
@@ -132,7 +138,7 @@ public class Board {
 		int tmp = 8;
 		while (tmp>0) {	
 			for (int i=7; i>=1;i--)
-				for (int j=7; j>=0;j--) {
+				for (int j=0; j<=7;j++) {
 					if (board[i][j] == -1) {
 						if (i != 0) {
 							board[i][j] = board[i-1][j];
@@ -144,14 +150,12 @@ public class Board {
 			tmp--;
 		}
 
-		for (int i=7; i>=0; i--)
+		for (int i=0; i<8; i++)
 			for (int j=0; j<8; j++)
 				if (board[i][j] == -1)	{
 					board[i][j] = rnd.nextInt(7);
 					offset[i][j] = -46;
 				}
-		//showBoard();
-		//showOffset();
 					
 	}
 
@@ -181,12 +185,10 @@ public class Board {
 		boolean hasMatch = false;
 		int start, end;
 		start = end = 0;
-		//System.out.println("I'm started at: " + i + " " + j);
 		start = checkRecursiveHor(i,j,-1);
 		end = checkRecursiveHor(i,j,1);
-		/*if (i == 6)
-			System.out.println(start + " " + end);*/
-		if (((j+end) - (j - start)) >=2)
+		
+		if (end + start>=2)
 			for (int k=j - start; k<=j + end; k++) {
 				if (givePoints) {
 					points += board[i][k] + 3;
@@ -196,8 +198,7 @@ public class Board {
 		}	
 		if (hasMatch) {
 			if (givePoints)
-				logger.info("Found horizontal match at {0} {1}",i,j);
-			this.moves--;
+				logger.info("Found horizontal match at " + i + " " + j);
 		}
 		return hasMatch;
 	}
@@ -210,7 +211,6 @@ public class Board {
 	 * @return int returns 1 if the neighbor node is the same.
 	 */
 	public int checkRecursiveHor(int i, int j, int dir) {
-		//int debugValue = 0;
 			if (j+dir<0 || j+dir>7)
 				return 0;
 			if (board[i][j] == -1 || board[i][j+dir] == -1)
@@ -232,11 +232,9 @@ public class Board {
 		boolean hasMatch = false;
 		int start, end;
 		start = end = 0;
-		//System.out.println("I'm started at: " + i + " " + j);
 		start = checkRecursiveVer(i,j,-1);
 		end = checkRecursiveVer(i,j,1);
-		//if (i == 3)
-		logger.debug("Vertical end: {0} start: {1}",end,start);
+
 		if (end + start >=2)
 			for (int k=i - start; k<=i + end; k++) {
 				if (givePoints) {
@@ -247,8 +245,7 @@ public class Board {
 		}	
 		if (hasMatch) {
 			if (givePoints)
-				logger.info("Found vertical match at {0} {1}",i,j);			
-			this.moves--;
+				logger.info("Found vertical match at " + i + " " + j);			
 		}
 		return hasMatch;
 	}
@@ -261,7 +258,6 @@ public class Board {
 	 * @return int returns 1 if the neighbor node is the same. 
 	 */
 	public int checkRecursiveVer(int i, int j, int dir) {
-		//int debugValue = 0;
 			if (i+dir<0 || i+dir>7)
 				return 0;
 			if (board[i][j] == -1 || board[i+dir][j] == -1)

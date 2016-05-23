@@ -54,7 +54,7 @@ public class BoardTest {
 	@Test
 	public void testGetElement() {
 		Board br = new Board();
-		assertEquals(5,br.getElement(0, 0));
+		assertEquals(3,br.getElement(0, 0));
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class BoardTest {
 	public void testSwitchPositions() {
 		Board br = new Board();
 		br.switchPositions(0, 0, 1, 0);
-		assertEquals(4,br.getElement(0, 0));
+		assertEquals(0,br.getElement(0, 0));
 	}
 
 	@Test

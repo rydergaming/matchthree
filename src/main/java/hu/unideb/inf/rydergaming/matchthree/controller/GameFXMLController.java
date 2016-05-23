@@ -1,9 +1,15 @@
 package hu.unideb.inf.rydergaming.matchthree.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -120,13 +126,33 @@ public class GameFXMLController implements Initializable {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         br = new Board();
         drawBoard();
+		try {
+			String tmpPath = System.getProperty("user.home") + "/.matchthree";
+			Path path = Paths.get(tmpPath);
+			logger.debug(tmpPath);
+			File tmpDir = new File(tmpPath);
+			tmpDir.mkdir();
+			File tmpScore = new File(tmpPath  + "/score.xml");
+			logger.debug(System.getProperty("os.name"));
+			if (System.getProperty("os.name").startsWith("Windows"))
+				Files.setAttribute(path, "dos:hidden", true);
+			/*if (hidden != null && !hidden) {
+				path.setAttribute("dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+			}*/
+			
+			if (!tmpScore.exists()) {
+				tmpScore.createNewFile();
+				XMLParser.saveXML(scoreBoard, tmpScore);
+			}
 
-        //scoreBoard = XMLParser.loadXML(new File(this.getClass().getClassLoader().getResource("score.xml")));
-		File tmpScore = new File(this.getClass().getClassLoader().getResource("score.xml").getPath());
-		logger.debug("The file:" + tmpScore.exists());
-		logger.debug(this.getClass().getClassLoader().getResource("score.xml").getPath());
-		scoreBoard = XMLParser.loadXML(tmpScore);
-		//XMLParser.saveXML(lista, file);
+			logger.debug("The file:" + tmpScore.exists());
+			scoreBoard = XMLParser.loadXML(tmpScore);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 
         textArea.setEditable(false);
 		for (List l: scoreBoard) {
@@ -181,26 +207,17 @@ public class GameFXMLController implements Initializable {
         	br.switchPositions(sX,sY,tX,tY);
     		//drawBoard();
 
-        	/*if (br.checkDirections(tX, tY, true)){
-        		br.fallBoard();
-        	}*/
         	
         	if (br.checkRecursiveHorStart(tX, tY, true) || br.checkRecursiveVerStart(tX, tY, true)) {
-        		//System.out.println("Starting showing the stuff:");
-        		//br.showBoard();
         		br.fallBoard();
         		points.setText("Points:\n" + Integer.toString(br.getPoints()));
+        		br.setMoves(br.getMoves()-1);
         		if (br.getMoves() == 0 ) {
-        			try {
-        				
-        				scoreBoard.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
-						File file = new File(this.getClass().getClassLoader().getResource("score.xml").toURI());
-						XMLParser.saveXML(scoreBoard, file);
-						file = null;
-					} catch (URISyntaxException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+    				String tmpPath = System.getProperty("user.home") + "/.matchthree";
+    				logger.debug(tmpPath);
+    				File outFile = new File(tmpPath  + "/score.xml");        				
+    				scoreBoard.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
+					XMLParser.saveXML(scoreBoard, outFile);
         		}
         		boolean checkNew = true;
         		while (checkNew) {
