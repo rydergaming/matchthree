@@ -123,6 +123,8 @@ public class GameFXMLController implements Initializable {
 
         //scoreBoard = XMLParser.loadXML(new File(this.getClass().getClassLoader().getResource("score.xml")));
 		File tmpScore = new File(this.getClass().getClassLoader().getResource("score.xml").getPath());
+		logger.debug("The file:" + tmpScore.exists());
+		logger.debug(this.getClass().getClassLoader().getResource("score.xml").getPath());
 		scoreBoard = XMLParser.loadXML(tmpScore);
 		//XMLParser.saveXML(lista, file);
 
@@ -192,7 +194,7 @@ public class GameFXMLController implements Initializable {
         			try {
         				
         				scoreBoard.add(new ArrayList<String>(Arrays.asList(playerName.getText(), Integer.toString(br.getPoints()))));
-						File file = new File(this.getClass().getResource("/score.xml").toURI());
+						File file = new File(this.getClass().getClassLoader().getResource("score.xml").toURI());
 						XMLParser.saveXML(scoreBoard, file);
 						file = null;
 					} catch (URISyntaxException e) {
@@ -265,14 +267,14 @@ public class GameFXMLController implements Initializable {
     			int tmp = br.getElement(j, i);
     			if (tmp == -1)
     				continue;
-    			String tmpString = "/sprites/spr_" + Integer.toString(tmp+1)+".png";
-    	        Image img = new Image(this.getClass()
+    			String tmpString = "sprites/spr_" + Integer.toString(tmp+1)+".png";
+    	        Image img = new Image(this.getClass().getClassLoader()
     	        		.getResourceAsStream(tmpString));
     	        gc.drawImage(img, i*46, br.offset[j][i]);
     		}
     	}
     	if (picked) {
-            Image img = new Image(this.getClass().getResourceAsStream("/sprites/spr_edge.png"));
+            Image img = new Image(this.getClass().getClassLoader().getResourceAsStream("sprites/spr_edge.png"));
             gc.drawImage(img, sY*46, sX*46);
     	}
     }

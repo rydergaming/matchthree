@@ -49,6 +49,7 @@ public class XMLParser {
 	public static List loadXML(File input) {
 		List<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
 		try {	
+			logger.debug("Loading XML file!");
 			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
 			NodeList nList = doc.getElementsByTagName("player");			
 			for (int i=0; i<nList.getLength(); i++) {
