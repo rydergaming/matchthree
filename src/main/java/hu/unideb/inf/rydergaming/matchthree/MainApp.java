@@ -1,6 +1,9 @@
 package hu.unideb.inf.rydergaming.matchthree;
 
 import javafx.application.Application;
+
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +26,12 @@ public class MainApp extends Application {
 	 * Sets up and starts the first scene.
 	 */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+		try {
     	logger.info("Starting main stage.");
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/startScene.fxml"));
+        Parent root;
+		root = FXMLLoader.load(getClass().getResource("/fxml/startScene.fxml"));
+
     
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
@@ -33,13 +39,13 @@ public class MainApp extends Application {
         stage.setTitle("Match Three");
         stage.setScene(scene);
         stage.show();
+		} catch (IOException e) {
+			logger.error("Error initializing JavaFX");
+			logger.error(e.getMessage());
+		}
     }
 
-    @Override
-    public void stop() throws Exception{
-    	System.exit(0);
-    	
-    }
+
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
@@ -51,8 +57,6 @@ public class MainApp extends Application {
     public static void main(String[] args) {   
 
         launch(args);
-        logger.info("Error deploying JavaFX. Program is closing.");
-        System.exit(-1);
     }
 
 }

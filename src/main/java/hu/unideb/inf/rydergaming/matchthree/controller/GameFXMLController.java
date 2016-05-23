@@ -121,13 +121,10 @@ public class GameFXMLController implements Initializable {
         br = new Board();
         drawBoard();
 
-        try {
-        	scoreBoard = XMLParser.loadXML(new File(this.getClass().getResource("/score.xml").toURI()));			
-			//XMLParser.saveXML(lista, file);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        //scoreBoard = XMLParser.loadXML(new File(this.getClass().getClassLoader().getResource("score.xml")));
+		File tmpScore = new File(this.getClass().getClassLoader().getResource("score.xml").getPath());
+		scoreBoard = XMLParser.loadXML(tmpScore);
+		//XMLParser.saveXML(lista, file);
 
         textArea.setEditable(false);
 		for (List l: scoreBoard) {
