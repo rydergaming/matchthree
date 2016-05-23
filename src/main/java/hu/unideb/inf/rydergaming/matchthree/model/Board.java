@@ -47,7 +47,7 @@ public class Board {
 
 	/**
 	 * Sets the points of the player.
-	 * @param moves
+	 * @param moves int set the moves of the player
 	 */
 	public void setMoves(int moves) {
 		this.moves = moves;
@@ -123,8 +123,8 @@ public class Board {
 	
 	/**
 	 * Returns the selected element from the board.
-	 * @param row index of the board array.
-	 * @param column index of the board array.
+	 * @param row int index of the board array.
+	 * @param column int index of the board array.
 	 * @return int the selected element's value from the board.
 	 */
 	public int getElement(int row, int column){
@@ -158,10 +158,10 @@ public class Board {
 
 	/**
 	 * Switches the position of two elements on the board.
-	 * @param aX row index of the first element.
-	 * @param aY column index of the first element.
-	 * @param bX row index of the second element.
-	 * @param bY column index of the second element.
+	 * @param aX int row index of the first element.
+	 * @param aY int column index of the first element.
+	 * @param bX int row index of the second element.
+	 * @param bY int column index of the second element.
 	 */
 	public void switchPositions(int aX, int aY, int bX, int bY) {
 		if (aX != bX && aY != bY)

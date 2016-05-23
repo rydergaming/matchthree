@@ -227,6 +227,7 @@ public class GameFXMLController implements Initializable {
 
         	
         	if (br.checkRecursiveHorStart(tX, tY, true) || br.checkRecursiveVerStart(tX, tY, true)) {
+        		logger.info("Manual match found");
         		logger.info("Match:\n" + br);
         		br.fallBoard();
         		logger.info("Fall:\n" + br);
@@ -246,6 +247,7 @@ public class GameFXMLController implements Initializable {
         			for (int i=0;i<8;i++)
         				for (int j=0; j<8; j++) {
         		        	if (br.checkRecursiveHorStart(i, j, true) || br.checkRecursiveVerStart(i, j, true)) {
+        		        		logger.info("Combo match found");
         		        		logger.info("Match:\n" + br);
         		        		br.fallBoard();
         		        		logger.info("Fall:\n" + br);
@@ -302,20 +304,13 @@ public class GameFXMLController implements Initializable {
     private void drawBoard() {
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		StringBuilder sb;
 		Image img;
     	for (int i=0; i<8; i++) {
     		for (int j=0; j<8; j++) {
     			int tmp = br.getElement(j, i);
     			if (tmp == -1)
     				continue;
-    			/*sb = new StringBuilder();
-    			sb.append("sprites/spr_").append(Integer.toString(tmp+1)).append(".png");
-    			String tmpString = sb.toString();
-    	        img = new Image(this.getClass().getClassLoader()
-    	        		.getResourceAsStream(tmpString));*/
     	        gc.drawImage(getImage(tmp), i*46, br.offset[j][i]);
-    	        img = null;
     		}
     	}
     	if (picked) {
@@ -323,7 +318,6 @@ public class GameFXMLController implements Initializable {
             gc.drawImage(img, sY*46, sX*46);
             img = null;
     	}
-    	sb = null;
     	img = null;
     	System.gc();
     }

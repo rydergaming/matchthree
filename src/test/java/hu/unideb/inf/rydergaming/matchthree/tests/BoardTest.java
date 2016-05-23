@@ -95,5 +95,25 @@ public class BoardTest {
 		Board br = new Board();
 		assertEquals(0, br.checkRecursiveVer(2, 3, -1));
 	}
+	@Test
+	public void testToString() {
+		Board br = new Board();
+		String tmp = 	  "[ 3  2  3  4  5  5  1  5 ]    [ 0    0    0    0    0    0    0    0   ]\n"
+						+ "[ 0  4  3  6  2  6  2  1 ]    [ 46   46   46   46   46   46   46   46  ]\n"
+						+ "[ 0  6  1  3  6  0  3  4 ]    [ 92   92   92   92   92   92   92   92  ]\n"
+						+ "[ 6  1  3  6  5  3  1  3 ]    [ 138  138  138  138  138  138  138  138 ]\n"
+						+ "[ 2  2  0  5  0  4  6  3 ]    [ 184  184  184  184  184  184  184  184 ]\n"
+						+ "[ 3  3  4  6  4  6  1  0 ]    [ 230  230  230  230  230  230  230  230 ]\n"
+						+ "[ 2  0  3  6  5  2  4  4 ]    [ 276  276  276  276  276  276  276  276 ]\n"
+						+ "[ 1  4  4  2  5  1  1  5 ]    [ 322  322  322  322  322  322  322  322 ]\n";		
+		assertEquals(tmp, br.toString());
+	}
+	
+	@Test
+	public void testSetMoves() {
+		Board br = new Board();
+		br.setMoves(1);
+		assertEquals(1, br.getMoves());
+	}
 
 }
