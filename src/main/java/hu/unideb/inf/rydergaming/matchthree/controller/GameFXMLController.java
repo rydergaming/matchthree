@@ -115,7 +115,15 @@ public class GameFXMLController implements Initializable {
      */
     Board br = new Board();
     
+    /**
+     * Map of the catched images.
+     */
     Map<Integer, Image> imageCache = new HashMap<>();
+    
+    /**
+     * AnimationTimer used in animating the board.
+     */
+    AnimationTimer animationTimer;
     
     private Image getImage(int i) {
     	if(!imageCache.containsKey(i)) {
@@ -180,7 +188,7 @@ public class GameFXMLController implements Initializable {
 		}
 		movesLeft.setText("Moves left: " + br.getMoves());
 		
-        new AnimationTimer()
+        animationTimer = new AnimationTimer()
         {
             public void handle(long currentNanoTime)
             {
@@ -201,7 +209,9 @@ public class GameFXMLController implements Initializable {
                 	gc.fillText("Out of moves", canvas.getWidth() / 2, canvas.getHeight() / 2);
                 }
             }
-        }.start();
+        };
+        
+        animationTimer.start();
     }    
     
     /**
@@ -274,6 +284,7 @@ public class GameFXMLController implements Initializable {
     @FXML
     public void newGameEvent(MouseEvent m) {
     	try {
+    		animationTimer.stop();
             Stage stage;
             Parent root;
             stage = (Stage) newGame.getScene().getWindow();
@@ -283,7 +294,6 @@ public class GameFXMLController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-            
         } catch (IOException ex) {
         	logger.error("newGameEvent exception.");
         }   
